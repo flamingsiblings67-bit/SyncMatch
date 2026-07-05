@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SyncMatch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="SyncMatch" />
+    <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="auth-screen" id="auth-screen">
+      <div class="auth-card">
+        <div class="brand-mark large">S</div>
+        <p class="eyebrow">SyncMatch</p>
+        <h1>Plan. Revise. Match. Connect.</h1>
+        <p>Your student study hub for staying organised, building momentum, and finding trusted study partners.</p>
+
+        <div class="auth-toggle">
+          <button class="toggle-btn active" data-mode="login">Log in</button>
+          <button class="toggle-btn" data-mode="signup">Sign up</button>
+        </div>
+
+        <form id="auth-form" class="auth-form">
+          <div id="signup-fields" class="hidden">
+            <input type="text" id="name" placeholder="Full name" />
+            <input type="text" id="level" placeholder="Level (GCSE / A-Level / Uni)" />
+          </div>
+          <input type="text" id="username" placeholder="Username" required />
+          <input type="password" id="password" placeholder="Password" required />
+          <button class="btn primary" type="submit">Continue</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="app-shell hidden" id="app-shell">
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark">S</div>
+          <div>
+            <h1>SyncMatch</h1>
+            <p>Plan • Revise • Match • Connect</p>
+          </div>
+        </div>
+        <button class="header-pill" id="logout-btn">Log out</button>
+      </header>
+
+      <main class="app-main">
+        <section class="screen active" id="hub-screen">
+          <div class="hero-card">
+            <p class="eyebrow">Today’s plan</p>
+            <h2>What should you do today?</h2>
+            <p>Start with a focused session, check your homework, and message one matched study buddy.</p>
+            <div class="chip-row">
+              <span class="chip" id="streak-chip">8 day streak</span>
+              <span class="chip" id="tasks-chip">2 tasks left</span>
+            </div>
+          </div>
+
+          <div class="card-grid">
+            <article class="mini-card">
+              <h3>Focus</h3>
+              <p id="todayFocus">Biology flashcards + Maths past paper</p>
+            </article>
+            <article class="mini-card">
+              <h3>Next exam</h3>
+              <p id="examCountdown">3 days</p>
+            </article>
+          </div>
+
+          <article class="list-card">
+            <div class="card-head">
+              <h3>Today’s tasks</h3>
+              <span class="status-pill">On track</span>
+            </div>
+            <div id="task-list"></div>
+          </article>
+        </section>
+
+        <section class="screen" id="revise-screen">
+          <div class="hero-card accent">
+            <p class="eyebrow">Revise</p>
+            <h2>Study smarter with a clear plan.</h2>
+            <p>Break subjects into topics, track countdowns, and run session timers without feeling overwhelmed.</p>
+          </div>
+
+          <article class="list-card">
+            <h3>Subject focus</h3>
+            <ul>
+              <li>Maths — algebra practice</li>
+              <li>Biology — cells and diffusion</li>
+              <li>English — essay structure</li>
+            </ul>
+          </article>
+
+          <article class="list-card">
+            <h3>Session timer</h3>
+            <div class="timer-card">
+              <strong id="timer-display">45:00</strong>
+              <div class="timer-controls">
+                <button class="btn secondary" id="start-timer">Start</button>
+                <button class="btn secondary" id="reset-timer">Reset</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="screen" id="match-screen">
+          <div class="hero-card">
+            <p class="eyebrow">Match</p>
+            <h2>Find study partners who fit your level.</h2>
+            <p>SyncMatch suggests learners based on subject strength, goals, and willingness to help.</p>
+          </div>
+          <div id="match-list"></div>
+        </section>
+
+        <section class="screen" id="messages-screen">
+          <div class="hero-card accent">
+            <p class="eyebrow">Messages</p>
+            <h2>Stay connected with your study circle.</h2>
+            <p>Ask for help, share revision notes, and keep each other accountable.</p>
+          </div>
+          <div id="message-list" class="chat-list"></div>
+          <form id="message-form" class="message-form">
+            <input type="text" id="message-input" placeholder="Type a message" required />
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+        </section>
+
+        <section class="screen" id="profile-screen">
+          <div class="hero-card">
+            <p class="eyebrow">Profile</p>
+            <h2>Your learning identity.</h2>
+            <p>Show your subjects, strengths, goals, and interests in one place.</p>
+          </div>
+
+          <article class="list-card">
+            <h3>Your profile</h3>
+            <div id="profile-summary"></div>
+          </article>
+
+          <article class="list-card">
+            <h3>Edit profile</h3>
+            <form id="profile-form" class="profile-form">
+              <input type="text" id="profile-name" placeholder="Name" />
+              <input type="text" id="profile-level" placeholder="Level" />
+              <input type="text" id="profile-subjects" placeholder="Subjects" />
+              <input type="text" id="profile-goals" placeholder="Goals" />
+              <button class="btn primary" type="submit">Save</button>
+            </form>
+          </article>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Bottom navigation">
+        <button class="nav-item active" data-target="hub-screen"><span>🏠</span><small>Hub</small></button>
+        <button class="nav-item" data-target="revise-screen"><span>📚</span><small>Revise</small></button>
+        <button class="nav-item" data-target="match-screen"><span>🤝</span><small>Match</small></button>
+        <button class="nav-item" data-target="messages-screen"><span>💬</span><small>Messages</small></button>
+        <button class="nav-item" data-target="profile-screen"><span>👤</span><small>Profile</small></button>
+      </nav>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
