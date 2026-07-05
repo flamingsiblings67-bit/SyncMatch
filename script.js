@@ -26,11 +26,12 @@ const focusOptions = ['Biology flashcards + Maths past paper', 'History essay pl
 const countdownOptions = ['10 days', '7 days', '3 days', '1 day'];
 
 const defaultState = {
+  isAuthenticated: false,
   user: {
-    name: 'Ava',
-    username: 'ava.study',
-    level: 'A-Level',
-    password: 'demo',
+    name: '',
+    username: '',
+    level: '',
+    password: '',
     bio: 'Revision focused and loves helping others.',
     subjects: 'Biology, Maths, English',
     goals: 'Improve exam confidence',
@@ -60,7 +61,17 @@ let state = loadState();
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return saved ? { ...defaultState, ...saved, user: { ...defaultState.user, ...(saved.user || {}) }, tasks: saved.tasks || defaultState.tasks, matches: saved.matches || defaultState.matches, messages: saved.messages || defaultState.messages } : structuredClone(defaultState);
+    return saved
+      ? {
+          ...defaultState,
+          ...saved,
+          isAuthenticated: Boolean(saved.isAuthenticated),
+          user: { ...defaultState.user, ...(saved.user || {}) },
+          tasks: saved.tasks || defaultState.tasks,
+          matches: saved.matches || defaultState.matches,
+          messages: saved.messages || defaultState.messages
+        }
+      : structuredClone(defaultState);
   } catch {
     return structuredClone(defaultState);
   }
@@ -180,6 +191,7 @@ authForm.addEventListener('submit', (event) => {
   } else {
     state.user = { ...state.user, username, password };
   }
+  state.isAuthenticated = true;
   saveState();
   showApp();
 });
@@ -230,8 +242,9 @@ profileForm.addEventListener('submit', (event) => {
 });
 
 logoutBtn.addEventListener('click', () => {
-  localStorage.removeItem(STORAGE_KEY);
-  state = loadState();
+  state.isAuthenticated = false;
+  state.user = { ...defaultState.user };
+  saveState();
   showAuth();
 });
 
@@ -263,7 +276,7 @@ startTimerBtn.addEventListener('click', () => {
 });
 resetTimerBtn.addEventListener('click', () => { timerSeconds = 2700; state.timerRunning = false; startTimerBtn.textContent = 'Start'; updateTimer(); saveState(); });
 
-if (state.user?.username) {
+if (state.isAuthenticated && state.user?.username) {
   showApp();
 } else {
   showAuth();
